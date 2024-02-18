@@ -2,10 +2,14 @@
 Matter 이산화탄소 농도 측정 센서 예제 프로젝트<br>
 다음 Matter 클러스터들에 대한 코드 구현 방법을 알아본다
 - Carbon Dioxide Concentration Measurement (Cluster Id: `0x040D`)
+- Temperature Measurement (Cluster ID: `0x0402`)
+- Relative Humidity Measurement (Cluster ID: `0x0405`)
+
+**2024년 2월 18일 기준 Apple Home 및 Google Home 모두 Air Quality Device Type 지원하지 않음**
 
 Software (Matter)
 ---
-3개의 Endpoint가 아래와 같이 생성된다. (센서 모듈이 CO2 농도 뿐만 아니라 온도와 상대 습도 데이터도 제공함)
+1개의 Endpoint가 아래와 같이 생성된다. (센서 모듈이 CO2 농도 뿐만 아니라 온도와 상대 습도 데이터도 제공함)
 
 1. Endpoint ID `1`<br>
     Device Type: Air Quality Sensor (Classification ID: `0x002C`)<br>
@@ -132,6 +136,21 @@ Build & Flash Firmware
 QR Code for commisioning
 ---
 ![qrcode.png](./resource/DACProvider/qrcode.png)
+
+Read Data using CHIP-TOOL
+---
+이산화탄소 농도 측정값 읽기
+```shell
+$ chip-tool carbondioxideconcentrationmeasurement read measured-value {pairing_node_id} 1
+```
+온도 측정값 읽기
+```shell
+$ chip-tool temperaturemeasurement read measured-value {pairing_node_id} 1
+```
+습도 측정값 읽기
+```shell
+$ chip-tool relativehumiditymeasurement read measured-value {pairing_node_id} 1
+```
 
 References
 ---
