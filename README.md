@@ -17,23 +17,16 @@ Software (Matter)
         - Min Measured Value (Attribute ID: `0x0001`)
         - Max Measured Value (Attribute ID: `0x0002`)
         - Measurement Unit (Attribute ID: `0x0008`)
-2. Endpoint ID `2`<br>
-    Device Type: Temperature Sensor (Classification ID: `0x0302`)<br>
-    [Clusters]
     - Temperature Measurement (Cluster ID: `0x0402`)<br>
         [Attributes]
         - Measured Value (Attribute ID: `0x0000`)
         - Min Measured Value (Attribute ID: `0x0001`)
         - Max Measured Value (Attribute ID: `0x0002`)
-3. Endpoint ID `3`<br>
-    Device Type: Humidity Sensor (Classification ID: `0x0307`) <br>
-    [Clusters]
     - Relative Humidity Measurement (Cluster ID: `0x0405`)<br>
         [Attributes]
         - Measured Value (Attribute ID: `0x0000`)
         - Min Measured Value (Attribute ID: `0x0001`)
         - Max Measured Value (Attribute ID: `0x0002`)
-
 
 Hardware
 ---

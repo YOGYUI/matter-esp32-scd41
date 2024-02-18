@@ -12,9 +12,7 @@
 #include "logger.h"
 #include "definition.h"
 #include "scd41.h"
-#include "co2sensor.h"
-#include "temperaturesensor.h"
-#include "humiditysensor.h"
+#include "airqualitysensor.h"
 
 #define TASK_TIMER_STACK_DEPTH  3072
 #define TASK_TIMER_PRIORITY     5
@@ -101,26 +99,13 @@ bool CSystem::initialize()
     matter_set_min_endpoint_id(1);
     GetLogger(eLogType::Info)->Log("Matter started");
 
-    // add co2 sensor endpoint
-    CCO2Sensor *co2_sensor = new CCO2Sensor();
-    if (co2_sensor && co2_sensor->matter_init_endpoint()) {
-        m_device_list.push_back(co2_sensor);
-    } else {
-        return false;
-    }
-
-    // add temperature sensor endpoint
-    CTemperatureSensor *temp_sensor = new CTemperatureSensor();
-    if (temp_sensor && temp_sensor->matter_init_endpoint()) {
-        m_device_list.push_back(temp_sensor);
-    } else {
-        return false;
-    }
-
-    // add humidity sensor endpoint
-    CHumiditySensor *humidity_sensor = new CHumiditySensor();
-    if (humidity_sensor && humidity_sensor->matter_init_endpoint()) {
-        m_device_list.push_back(humidity_sensor);
+    // add airquality sensor endpoint
+    CAirQualitySensor *sensor = new CAirQualitySensor();
+    if (sensor && sensor->matter_init_endpoint()) {
+        m_device_list.push_back(sensor);
+        sensor->set_carbon_dioxide_concentration_measurement_min_measured_value(400.f);
+        sensor->set_carbon_dioxide_concentration_measurement_max_measured_value(5000.f);
+        sensor->set_carbon_dioxide_concentration_measurement_measurement_unit(eMeasurementUnit::PPM);
     } else {
         return false;
     }
@@ -128,6 +113,7 @@ bool CSystem::initialize()
     m_initialized = true;
     GetLogger(eLogType::Info)->Log("Initialized");
     // print_system_info();
+    // print_matter_endpoints_info();
     
     return true;
 }
@@ -461,11 +447,11 @@ void CSystem::task_timer_function(void *param)
 
                 if (GetScd41Ctrl()->read_measurement(&co2ppm, &temperature, &humidity)) {
                     dev = obj->find_device_by_endpoint_id(1);
-                    dev->update_measured_value((float)co2ppm);
-                    dev = obj->find_device_by_endpoint_id(2);
-                    dev->update_measured_value(temperature);
-                    dev = obj->find_device_by_endpoint_id(3);
-                    dev->update_measured_value(humidity);
+                    if (dev) {
+                        dev->update_measured_value_co2ppm((float)co2ppm);
+                        dev->update_measured_value_temperature(temperature);
+                        dev->update_measured_value_humidity(humidity);
+                    }
                 }
                 measure_shot = false;
                 GetLogger(eLogType::Info)->Log("CO2 PPM: %u, Temperature: %g, Humidity: %g", co2ppm, temperature, humidity);

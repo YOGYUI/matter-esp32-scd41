@@ -6,8 +6,12 @@ CDevice::CDevice()
 {
     m_endpoint = nullptr;
     m_endpoint_id = 0;
-    m_measured_value = 0.f;
-    m_measured_value_prev = 0.f;
+    m_measured_value_co2ppm = 0.f;
+    m_measured_value_co2ppm_prev = 0.f;
+    m_measured_value_temperature = 0;
+    m_measured_value_temperature_prev = 0;
+    m_measured_value_humidity = 0;
+    m_measured_value_humidity_prev = 0;
 }
 
 CDevice::~CDevice()
@@ -200,7 +204,17 @@ void CDevice::matter_update_cluster_attribute_common(uint16_t endpoint_id, uint3
     }
 }
 
-void CDevice::update_measured_value(float value)
+void CDevice::update_measured_value_co2ppm(float value)
 {
+    m_measured_value_co2ppm = value;
+}
 
+void CDevice::update_measured_value_temperature(float value)
+{
+    m_measured_value_temperature = (int16_t)(value * 100.f);
+}
+
+void CDevice::update_measured_value_humidity(float value)
+{
+    m_measured_value_humidity = (uint16_t)(value * 100.f);
 }

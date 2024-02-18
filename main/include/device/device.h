@@ -54,7 +54,19 @@ protected:
     );
 
 public:
-    virtual void update_measured_value(float value);
+    virtual void update_measured_value_co2ppm(float value);
+    virtual void update_measured_value_temperature(float value);
+    virtual void update_measured_value_humidity(float value);
+
+protected:
+    float m_measured_value_co2ppm;
+    float m_measured_value_co2ppm_prev;
+
+    int16_t m_measured_value_temperature;
+    int16_t m_measured_value_temperature_prev;
+
+    uint16_t m_measured_value_humidity;
+    uint16_t m_measured_value_humidity_prev;
 };
 
 #ifdef __cplusplus
