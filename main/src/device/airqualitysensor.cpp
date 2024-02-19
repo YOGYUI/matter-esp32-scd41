@@ -53,12 +53,6 @@ bool CAirQualitySensor::matter_config_attributes()
     if (!create_relative_humidity_measurement_cluster()) return false;
     if (!create_carbon_dioxide_concentration_measurement_cluster()) return false;
 
-    
-
-    
-
-    
-
     return true;
 }
 
